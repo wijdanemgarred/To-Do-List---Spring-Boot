@@ -58,4 +58,14 @@ public class CategorieServiceTest {
         verify(categorieRepository, times(1)).findById(1L);
     }
 
+    @Test
+    void getCategorieById_ShouldReturnEmpty() {
+        when(categorieRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Optional<Categorie> foundCategorie = categorieService.getCategorieById(1L);
+
+        assertFalse(foundCategorie.isPresent());
+        verify(categorieRepository, times(1)).findById(1L);
+    }
+
 }
