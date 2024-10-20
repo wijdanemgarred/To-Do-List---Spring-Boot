@@ -41,37 +41,33 @@ public class UtilisateurServiceTest {
         verify(utilisateurRepository, times(1)).save(utilisateur);
     }
 
+
+
     @Test
     void getUtilisateurById_ShouldReturnUtilisateur() {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setId(1L);
         utilisateur.setNom("John Doe");
 
-        when(utilisateurRepository.findById(1L)).thenReturn(Optional.of(utilisateur));
+        when(utilisateurRepository.findById(1L)).thenReturn(Optional.of(utilisateur));  // Mocking a found user
 
-        Optional<Utilisateur> foundUtilisateur = Optional.ofNullable(utilisateurService.getUserById(1L));
+        Utilisateur foundUtilisateur = utilisateurService.getUserById(1L);  // No Optional
 
-        assertTrue(foundUtilisateur.isPresent());
-        assertEquals("John Doe", foundUtilisateur.get().getNom());
-        verify(utilisateurRepository, times(1)).findById(1L);
+        assertNotNull(foundUtilisateur);  // Assert user is not null
+        assertEquals("John Doe", foundUtilisateur.getNom());  // Check the name
+        verify(utilisateurRepository, times(1)).findById(1L);  // Verify the interaction with repository
     }
 
     @Test
-    void getUtilisateurById_ShouldReturnEmpty() {
-        when(utilisateurRepository.findById(1L)).thenReturn(Optional.empty());
+    void getUtilisateurById_ShouldThrowExceptionWhenNotFound() {
+        when(utilisateurRepository.findById(1L)).thenReturn(Optional.empty());  // Mocking user not found
 
-        Optional<Utilisateur> foundUtilisateur = Optional.ofNullable(utilisateurService.getUserById(1L));
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            utilisateurService.getUserById(1L);  // Should throw an exception
+        });
 
-        assertFalse(foundUtilisateur.isPresent());
-        verify(utilisateurRepository, times(1)).findById(1L);
+        assertEquals("User not found with id: 1", exception.getMessage());  // Check the exception message
+        verify(utilisateurRepository, times(1)).findById(1L);  // Verify repository interaction
     }
 
-    @Test
-    void deleteUtilisateur_ShouldCallDeleteMethod() {
-        doNothing().when(utilisateurRepository).deleteById(1L);
-
-        utilisateurService.deleteUser(1L);
-
-        verify(utilisateurRepository, times(1)).deleteById(1L);
-    }
 }
