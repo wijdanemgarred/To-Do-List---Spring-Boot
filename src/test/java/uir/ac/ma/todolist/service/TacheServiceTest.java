@@ -41,5 +41,25 @@ public class TacheServiceTest {
         verify(tacheRepository, times(1)).save(tache);
     }
 
+    @Test
+    void getTacheById_ShouldReturnTache() {
+        // Create a mock Tache object
+        Tache tache = new Tache();
+        tache.setId(1L);
+        tache.setTitre("Faire le projet Angular");
+
+        // Mock the repository to return the tache directly (no Optional)
+        when(tacheRepository.findById(1L)).thenReturn(Optional.of(tache));
+
+        // Call the service method
+        Tache foundTache = tacheService.getTacheById(1L);
+
+        // Verify that the correct task was returned
+        assertEquals("Faire le projet Angular", foundTache.getTitre());
+
+        // Verify that the repository method was called once
+        verify(tacheRepository, times(1)).findById(1L);
+    }
+
 
 }
