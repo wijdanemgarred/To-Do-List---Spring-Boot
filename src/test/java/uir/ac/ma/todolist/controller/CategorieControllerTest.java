@@ -63,5 +63,23 @@ public class CategorieControllerTest {
         verify(categorieService, times(1)).getCategorieById(1L);
     }
 
+    @Test
+    void getCategorieById_ShouldReturnNotFound() {
+        when(categorieService.getCategorieById(1L)).thenReturn(Optional.empty());
 
+        ResponseEntity<Categorie> response = categorieController.getCategorieById(1L);
+
+        assertEquals(404, response.getStatusCodeValue());
+        verify(categorieService, times(1)).getCategorieById(1L);
+    }
+
+    @Test
+    void deleteCategorie_ShouldReturnNoContent() {
+        doNothing().when(categorieService).deleteCategorie(1L);
+
+        ResponseEntity<Void> response = categorieController.deleteCategorie(1L);
+
+        assertEquals(204, response.getStatusCodeValue());
+        verify(categorieService, times(1)).deleteCategorie(1L);
+    }
 }
