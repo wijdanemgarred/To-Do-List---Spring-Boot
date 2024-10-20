@@ -56,5 +56,15 @@ public class UtilisateurServiceTest {
         verify(utilisateurRepository, times(1)).findById(1L);
     }
 
+    @Test
+    void getUtilisateurById_ShouldReturnEmpty() {
+        when(utilisateurRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Optional<Utilisateur> foundUtilisateur = Optional.ofNullable(utilisateurService.getUserById(1L));
+
+        assertFalse(foundUtilisateur.isPresent());
+        verify(utilisateurRepository, times(1)).findById(1L);
+    }
+
 
 }
