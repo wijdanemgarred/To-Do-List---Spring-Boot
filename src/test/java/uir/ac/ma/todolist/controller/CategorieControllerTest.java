@@ -48,4 +48,20 @@ public class CategorieControllerTest {
         verify(categorieService, times(1)).createCategorie(categorie);
     }
 
+    @Test
+    void getCategorieById_ShouldReturnCategorie() {
+        Categorie categorie = new Categorie();
+        categorie.setId(1L);
+        categorie.setNom("School");
+
+        when(categorieService.getCategorieById(1L)).thenReturn(Optional.of(categorie));
+
+        ResponseEntity<Categorie> response = categorieController.getCategorieById(1L);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals("School", response.getBody().getNom());
+        verify(categorieService, times(1)).getCategorieById(1L);
+    }
+
+
 }
