@@ -64,10 +64,17 @@ public class TacheServiceTest {
 
     @Test
     void deleteTache_ShouldCallDeleteMethod() {
+        // Mock the behavior of existsById to return true
+        when(tacheRepository.existsById(1L)).thenReturn(true);
+
+        // Mock the behavior of deleteById
         doNothing().when(tacheRepository).deleteById(1L);
 
+        // Call the service method
         tacheService.deleteTache(1L);
 
+        // Verify that both existsById and deleteById were called once
+        verify(tacheRepository, times(1)).existsById(1L);
         verify(tacheRepository, times(1)).deleteById(1L);
     }
 
