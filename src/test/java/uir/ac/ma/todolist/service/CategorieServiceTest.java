@@ -43,4 +43,19 @@ public class CategorieServiceTest {
     }
 
 
+    @Test
+    void getCategorieById_ShouldReturnCategorie() {
+        Categorie categorie = new Categorie();
+        categorie.setId(1L);
+        categorie.setNom("School");
+
+        when(categorieRepository.findById(1L)).thenReturn(Optional.of(categorie));
+
+        Optional<Categorie> foundCategorie = categorieService.getCategorieById(1L);
+
+        assertTrue(foundCategorie.isPresent());
+        assertEquals("School", foundCategorie.get().getNom());
+        verify(categorieRepository, times(1)).findById(1L);
+    }
+
 }
