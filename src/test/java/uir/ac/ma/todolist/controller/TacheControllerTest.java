@@ -42,5 +42,20 @@ public class TacheControllerTest {
         verify(tacheService, times(1)).createTache(tache);
     }
 
+    @Test
+    void getTacheById_ShouldReturnTache() {
+        Tache tache = new Tache();
+        tache.setId(1L);
+        tache.setTitre("Faire le projet Angular");
+
+        when(tacheService.getTacheById(1L)).thenReturn(tache);
+
+        ResponseEntity<Tache> response = tacheController.getTacheById(1L);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals("Faire le projet Angular", response.getBody().getTitre());
+        verify(tacheService, times(1)).getTacheById(1L);
+    }
+
 
 }
