@@ -66,5 +66,12 @@ public class UtilisateurServiceTest {
         verify(utilisateurRepository, times(1)).findById(1L);
     }
 
+    @Test
+    void deleteUtilisateur_ShouldCallDeleteMethod() {
+        doNothing().when(utilisateurRepository).deleteById(1L);
 
+        utilisateurService.deleteUser(1L);
+
+        verify(utilisateurRepository, times(1)).deleteById(1L);
+    }
 }
