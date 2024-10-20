@@ -42,5 +42,28 @@ public class UtilisateurControllerTest {
         verify(utilisateurService, times(1)).register(utilisateur);
     }
 
+    @Test
+
+    void getUtilisateurById_ShouldReturnUtilisateur() {
+        // Create a mock Utilisateur object
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setId(1L);
+        utilisateur.setNom("John Doe");
+
+        // Mock the service to return the utilisateur object directly (no Optional)
+        when(utilisateurService.getUserById(1L)).thenReturn(utilisateur);
+
+        // Call the controller method
+        ResponseEntity<Utilisateur> response = utilisateurController.getUserById(1L);
+
+        // Verify the status and returned data
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals("John Doe", response.getBody().getNom());
+
+        // Verify that the service method was called once
+        verify(utilisateurService, times(1)).getUserById(1L);
+    }
+
+
 
 }
