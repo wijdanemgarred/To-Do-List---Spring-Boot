@@ -62,4 +62,12 @@ public class TacheServiceTest {
     }
 
 
+    @Test
+    void deleteTache_ShouldCallDeleteMethod() {
+        doNothing().when(tacheRepository).deleteById(1L);
+
+        tacheService.deleteTache(1L);
+
+        verify(tacheRepository, times(1)).deleteById(1L);
+    }
 }
