@@ -17,7 +17,7 @@ public class Tache {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "categorie_id", nullable = false)
+    @JoinColumn(name = "categorie_id")
     private Categorie categorie;
 
     private LocalDateTime deadline;

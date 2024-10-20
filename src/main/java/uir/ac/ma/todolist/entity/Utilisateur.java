@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "utilisateur")
@@ -21,6 +22,7 @@ public class Utilisateur {
     private String mot_de_passe;
 
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Tache> taches;
 
     // Getters and Setters

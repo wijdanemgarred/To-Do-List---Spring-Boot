@@ -7,6 +7,7 @@ import uir.ac.ma.todolist.entity.Categorie;
 import uir.ac.ma.todolist.service.CategorieService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -27,5 +28,17 @@ public class CategorieController {
         return ResponseEntity.ok(categories);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategorie(@PathVariable Long id) {
+        categorieService.deleteCategorie(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Categorie> getCategorieById(@PathVariable Long id) {
+        Optional<Categorie> categorie = categorieService.getCategorieById(id);
+        return categorie.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
     // Additional endpoints (e.g., get category by ID, delete category)
 }

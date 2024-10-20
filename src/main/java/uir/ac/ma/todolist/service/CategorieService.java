@@ -8,6 +8,7 @@ import uir.ac.ma.todolist.repository.CategorieRepository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategorieService {
@@ -25,5 +26,12 @@ public class CategorieService {
     }
 
     // Additional methods (if needed)
+    public Optional<Categorie> getCategorieById(Long id) {
+        return categorieRepository.findById(id);
+    }
+
+    public void deleteCategorie(Long id) {
+        categorieRepository.deleteById(id);
+    }
 }
 
