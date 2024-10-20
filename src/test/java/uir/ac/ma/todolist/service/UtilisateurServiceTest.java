@@ -70,4 +70,35 @@ public class UtilisateurServiceTest {
         verify(utilisateurRepository, times(1)).findById(1L);  // Verify repository interaction
     }
 
+    @Test
+    void deleteUtilisateur_ShouldCallDeleteMethod() {
+        // Mock that the user exists
+        when(utilisateurRepository.existsById(1L)).thenReturn(true);
+        doNothing().when(utilisateurRepository).deleteById(1L);  // Mock the delete method
+
+        // Call the service method
+        utilisateurService.deleteUser(1L);
+
+        // Verify that the delete method was called once
+        verify(utilisateurRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void deleteUtilisateur_ShouldThrowExceptionWhenUserNotFound() {
+        // Mock that the user does not exist
+        when(utilisateurRepository.existsById(1L)).thenReturn(false);
+
+        // Call the delete method and expect an exception
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            utilisateurService.deleteUser(1L);
+        });
+
+        // Check that the exception message matches
+        assertEquals("User not found with id: 1", exception.getMessage());
+
+        // Verify that deleteById was never called because the user doesn't exist
+        verify(utilisateurRepository, never()).deleteById(1L);
+    }
+
+
 }
