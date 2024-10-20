@@ -43,7 +43,6 @@ public class UtilisateurControllerTest {
     }
 
     @Test
-
     void getUtilisateurById_ShouldReturnUtilisateur() {
         // Create a mock Utilisateur object
         Utilisateur utilisateur = new Utilisateur();
@@ -64,6 +63,13 @@ public class UtilisateurControllerTest {
         verify(utilisateurService, times(1)).getUserById(1L);
     }
 
+    @Test
+    void deleteUtilisateur_ShouldReturnNoContent() {
+        doNothing().when(utilisateurService).deleteUser(1L);
 
+        ResponseEntity<Void> response = utilisateurController.deleteUser(1L);
 
+        assertEquals(204, response.getStatusCodeValue());
+        verify(utilisateurService, times(1)).deleteUser(1L);
+    }
 }
