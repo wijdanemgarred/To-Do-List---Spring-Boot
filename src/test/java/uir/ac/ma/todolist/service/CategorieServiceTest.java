@@ -68,4 +68,12 @@ public class CategorieServiceTest {
         verify(categorieRepository, times(1)).findById(1L);
     }
 
+    @Test
+    void deleteCategorie_ShouldCallDeleteMethod() {
+        doNothing().when(categorieRepository).deleteById(1L);
+
+        categorieService.deleteCategorie(1L);
+
+        verify(categorieRepository, times(1)).deleteById(1L);
+    }
 }
