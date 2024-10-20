@@ -41,5 +41,20 @@ public class UtilisateurServiceTest {
         verify(utilisateurRepository, times(1)).save(utilisateur);
     }
 
+    @Test
+    void getUtilisateurById_ShouldReturnUtilisateur() {
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setId(1L);
+        utilisateur.setNom("John Doe");
+
+        when(utilisateurRepository.findById(1L)).thenReturn(Optional.of(utilisateur));
+
+        Optional<Utilisateur> foundUtilisateur = Optional.ofNullable(utilisateurService.getUserById(1L));
+
+        assertTrue(foundUtilisateur.isPresent());
+        assertEquals("John Doe", foundUtilisateur.get().getNom());
+        verify(utilisateurRepository, times(1)).findById(1L);
+    }
+
 
 }
