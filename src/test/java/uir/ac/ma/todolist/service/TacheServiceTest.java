@@ -92,7 +92,7 @@ public class TacheServiceTest {
     @Test
     void getTacheById_ShouldThrowExceptionWhenNotFound() {
         // Mock the repository to return an empty result
-        when(tacheRepository.findById(1L)).thenReturn(Optional.empty());
+        when(tacheRepository.findById(2L)).thenReturn(Optional.empty());
 
         // Assert that a RuntimeException is thrown when the task is not found
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
