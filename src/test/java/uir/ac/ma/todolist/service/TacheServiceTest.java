@@ -28,18 +28,28 @@ public class TacheServiceTest {
     }
 
     @Test
-    void createTache_ShouldReturnNewTache() {
+    void createTache_ShouldReturnNewTache_WithID() {
         Tache tache = new Tache();
         tache.setTitre("Faire le projet Angular");
 
-        when(tacheRepository.save(any(Tache.class))).thenReturn(tache);
+        // Assume the repository's findById method returns Optional.empty() for ID 1
+        when(tacheRepository.findById(1)).thenReturn(Optional.empty());
+
+        // Mock the save method to return the tache with ID set
+        when(tacheRepository.save(any(Tache.class))).thenAnswer(invocation -> {
+            Tache t = invocation.getArgument(0);
+            t.setId(1L); // Set the ID to 1
+            return t;
+        });
 
         Tache createdTache = tacheService.createTache(tache);
 
         assertNotNull(createdTache);
         assertEquals("Faire le projet Angular", createdTache.getTitre());
+        assertEquals(1, createdTache.getId()); // Check that the ID is set to 1
         verify(tacheRepository, times(1)).save(tache);
     }
+
 
     @Test
     void getTacheById_ShouldReturnTache() {
