@@ -90,7 +90,7 @@ public class TacheServiceTest {
         });
 
         // Check that the exception message is correct
-        assertEquals("Tache not found with id: 1", exception.getMessage());
+        assertEquals("Tâche non trouvée avec l'ID : 1", exception.getMessage());
 
         // Verify that the repository method was called once
         verify(tacheRepository, times(1)).findById(1L);
