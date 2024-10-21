@@ -33,7 +33,7 @@ public class TacheServiceTest {
         tache.setTitre("Faire le projet Angular");
 
         // Assume the repository's findById method returns Optional.empty() for ID 1
-        when(tacheRepository.findById(1)).thenReturn(Optional.empty());
+        when(tacheRepository.findById(1L)).thenReturn(Optional.empty());
 
         // Mock the save method to return the tache with ID set
         when(tacheRepository.save(any(Tache.class))).thenAnswer(invocation -> {
