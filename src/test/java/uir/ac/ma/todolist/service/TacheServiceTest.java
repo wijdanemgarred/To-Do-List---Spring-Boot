@@ -74,19 +74,23 @@ public class TacheServiceTest {
 
     @Test
     void deleteTache_ShouldCallDeleteMethod() {
-        // Mock the behavior of existsById to return true
-        when(tacheRepository.existsById(1L)).thenReturn(true);
+        // Mock the behavior of findById to return a Tache
+        Tache tache = new Tache();
+        tache.setId(1L);
+        tache.setTitre("Example Task");
+        when(tacheRepository.findById(1L)).thenReturn(Optional.of(tache));
 
-        // Mock the behavior of deleteById
-        doNothing().when(tacheRepository).deleteById(1L);
+        // Mock the behavior of delete
+        doNothing().when(tacheRepository).delete(tache);
 
         // Call the service method
         tacheService.deleteTache(1L);
 
-        // Verify that both existsById and deleteById were called once
-        verify(tacheRepository, times(1)).existsById(1L);
-        verify(tacheRepository, times(1)).deleteById(1L);
+        // Verify that findById and delete were called
+        verify(tacheRepository, times(1)).findById(1L);
+        verify(tacheRepository, times(1)).delete(tache);
     }
+
 
 
     @Test
