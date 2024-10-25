@@ -130,4 +130,5 @@ jobs:
 
       - name: Run Application Container
         run: |
-          docker run --network app_network -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/todolist" -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=root_password your-docker-image-name:latest
+          docker run --network app_network -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/todolist" -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=root_password wijdane111/todolistdeploy:latest
+
