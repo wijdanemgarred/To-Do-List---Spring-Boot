@@ -92,17 +92,15 @@ jobs:
           MYSQL_USER: "root"
           MYSQL_PASSWORD: ""  # Set to blank
 
-
   deploy:
     runs-on: ubuntu-latest
-    needs: test  # This job depends on the test job
+    needs: test
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: |
-          docker build -t your-docker-image-name:latest .
+        run: docker build -t your-docker-image-name:latest .
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -111,5 +109,22 @@ jobs:
           password: ${{ secrets.wijdane123 }}
 
       - name: Push Docker image to Docker Hub
+        run: docker push your-docker-image-name:latest
+
+      - name: Create Docker network
+        run: docker network create app_network
+
+      - name: Start MySQL container
         run: |
-          docker push your-docker-image-name:latest
+          docker run -d --name mysql --network app_network -e MYSQL_DATABASE=todolist -e MYSQL_ROOT_PASSWORD="" -p 3306:3306 mysql
+
+      - name: Wait for MySQL to be ready
+        run: |
+          until docker exec mysql mysqladmin ping --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 2
+          done
+
+      - name: Run Application Container
+        run: |
+          docker run --network app_network -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/todolist" -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD="" your-docker-image-name:latest
