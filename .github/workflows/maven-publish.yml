@@ -127,3 +127,7 @@ jobs:
             echo "Waiting for MySQL to be ready..."
             sleep 5
           done
+
+      - name: Run Application Container
+        run: |
+          docker run --network app_network -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/todolist" -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=root_password your-docker-image-name:latest
