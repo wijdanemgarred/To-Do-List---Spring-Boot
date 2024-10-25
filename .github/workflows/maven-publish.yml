@@ -151,8 +151,6 @@ jobs:
       - name: Stop Application Container
         run: docker stop todolist_app || true
 
-      - name: Remove Application Container
-        run: docker rm todolist_app || true
 
       - name: Remove MySQL Container
         run: docker rm -f mysql || true
