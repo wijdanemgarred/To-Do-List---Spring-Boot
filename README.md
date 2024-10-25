@@ -78,7 +78,7 @@ This project utilizes GitHub Actions for CI/CD. The pipeline includes:
 
 ### Workflow File
 
-The GitHub Actions workflow is defined in `.github/workflows/deploy.yml`. Make sure to update the secrets in your repository settings for Docker Hub credentials.
+The GitHub Actions workflow is defined in `.github/workflows/maven-publish.yml`. Make sure to update the secrets in your repository settings for Docker Hub credentials.
 
 ## API Documentation
 
