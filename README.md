@@ -97,4 +97,3 @@ Feel free to fork the repository and submit pull requests for any improvements o
 - GitHub Actions Documentation
 ```
 
-You can copy and paste this updated content into your `README.md` file!
