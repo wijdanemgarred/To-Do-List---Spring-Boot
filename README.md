@@ -88,10 +88,6 @@ Refer to the Postman collection for detailed API documentation, including endpoi
 
 Feel free to fork the repository and submit pull requests for any improvements or bug fixes.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
 - Spring Boot Documentation
