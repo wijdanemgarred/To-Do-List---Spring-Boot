@@ -136,6 +136,8 @@ jobs:
             -e SPRING_DATASOURCE_USERNAME=root \
             -e SPRING_DATASOURCE_PASSWORD=root_password \
             wijdane111/todolistdeploy:latest
+            sleep 10
+          done
 
       - name: Wait for Application to be Ready
         run: |
