@@ -116,15 +116,14 @@ jobs:
 
       - name: Start MySQL container
         run: |
-          docker run -d --name mysql --network app_network -e MYSQL_DATABASE=todolist -e MYSQL_ROOT_PASSWORD="" -p 3306:3306 mysql
+          docker run -d --name mysql --network app_network -e MYSQL_DATABASE=todolist -e MYSQL_ROOT_PASSWORD=root_password -p 3306:3306 mysql
+
+      - name: Check MySQL container logs
+        run: docker logs mysql || true
 
       - name: Wait for MySQL to be ready
         run: |
           until docker exec mysql mysqladmin ping --silent; do
             echo "Waiting for MySQL to be ready..."
-            sleep 2
+            sleep 5
           done
-
-      - name: Run Application Container
-        run: |
-          docker run --network app_network -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/todolist" -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD="" your-docker-image-name:latest
