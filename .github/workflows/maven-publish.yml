@@ -112,7 +112,7 @@ jobs:
         run: docker push wijdane111/todolistdeploy:latest
 
       - name: Create Docker network
-        run: docker network create app_network || true  # Prevent error if already exists
+        run: docker network create app_network || true
 
       - name: Start MySQL container
         run: |
@@ -129,22 +129,30 @@ jobs:
           done
 
       - name: Run Application Container
-        id: run_app
         run: |
           docker run --name todolist_app --network app_network \
             -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/todolist" \
             -e SPRING_DATASOURCE_USERNAME=root \
             -e SPRING_DATASOURCE_PASSWORD=root_password \
-            wijdane111/todolistdeploy:latest
-            sleep 10
-          done
+            -d wijdane111/todolistdeploy:latest  # Run in detached mode
 
       - name: Wait for Application to be Ready
         run: |
-          until curl -s http://localhost:8080/actuator/health; do
-            echo "Waiting for application to be ready..."
-            sleep 5
+          for i in {1..10}; do  # Retry for up to 10 times
+            if curl -s http://localhost:8081/actuator/health; then
+              echo "Application is ready."
+              break
+            else
+              echo "Waiting for application to be ready..."
+              sleep 5
+            fi
           done
 
-      - name: Check Application container logs
-        run: docker logs todolist_app || true
+      - name: Stop Application Container
+        run: docker stop todolist_app || true
+
+      - name: Remove Application Container
+        run: docker rm todolist_app || true
+
+      - name: Remove MySQL Container
+        run: docker rm -f mysql || true
