@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "utilisateur")
@@ -14,8 +18,12 @@ public class Utilisateur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Le nom ne peut pas être vide.")
+    @Size(min = 2, max = 100, message = "Le nom doit avoir entre 2 et 100 caractères.")
     private String nom;
 
+    @NotNull(message = "L'email ne peut pas être nul.")
+    @Email(message = "L'email doit être valide.")
     @Column(unique = true)
     private String email;
 
