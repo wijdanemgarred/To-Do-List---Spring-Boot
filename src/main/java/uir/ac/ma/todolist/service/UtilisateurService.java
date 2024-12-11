@@ -49,4 +49,13 @@ public class UtilisateurService {
         }
         utilisateurRepository.deleteById(id); // Call the repository method to delete the user
     }
+
+    // Simple login method
+    public Utilisateur login(String email, String mot_de_passe) {
+        Utilisateur user = utilisateurRepository.findByEmail(email);
+        if (user != null && user.getMot_de_passe().equals(mot_de_passe)) {
+            return user;  // Return the user if login is successful
+        }
+        return null;  // Return null if authentication fails
+    }
 }

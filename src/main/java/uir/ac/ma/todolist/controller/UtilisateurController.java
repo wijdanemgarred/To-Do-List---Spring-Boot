@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uir.ac.ma.todolist.entity.Utilisateur;
@@ -61,5 +62,17 @@ public class UtilisateurController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         utilisateurService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Login endpoint
+    @PostMapping("/login")
+    public ResponseEntity<Utilisateur> login(@RequestBody Utilisateur utilisateur) {
+        Utilisateur user = utilisateurService.login(utilisateur.getEmail(), utilisateur.getMot_de_passe());
+        if (user != null) {
+            return ResponseEntity.ok(user); // Return the logged-in user details (including ID)
+        } else {
+            return ResponseEntity.status(401).body(null);  // Unauthorized if login fails
+        }
+
     }
 }
