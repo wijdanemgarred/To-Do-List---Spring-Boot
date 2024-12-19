@@ -1,10 +1,5 @@
 package uir.ac.ma.todolist.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +16,12 @@ public class UtilisateurController {
     private UtilisateurService utilisateurService;
 
     @PostMapping("/register")
-    public ResponseEntity<Utilisateur> register(@RequestBody @Valid Utilisateur utilisateur) {
+    public ResponseEntity<Utilisateur> register(@RequestBody Utilisateur utilisateur) {
         Utilisateur newUser = utilisateurService.register(utilisateur);
         return ResponseEntity.ok(newUser);
     }
 
-    @Operation(
-            summary = "Récupérer tous les utilisateurs",
-            description = "Cette méthode récupère tous les utilisateurs du système"
-    )
+
     // Endpoint to get all users
     @GetMapping
     public ResponseEntity<List<Utilisateur>> getAllUsers() {
@@ -38,13 +30,9 @@ public class UtilisateurController {
     }
 
     // Endpoint to get a user by ID
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Utilisateur trouvé"),
-            @ApiResponse (responseCode = "404", description = "Utilisateur non trouvé")
-    })
+
     @GetMapping("/{id}")
-    public ResponseEntity<Utilisateur> getUserById(@Parameter(description = "ID de l'utilisateur à récupérer", required =
-            true)@PathVariable Long id) {
+    public ResponseEntity<Utilisateur> getUserById(@PathVariable Long id) {
         Utilisateur user = utilisateurService.getUserById(id);
         return ResponseEntity.ok(user);
     }
@@ -63,15 +51,49 @@ public class UtilisateurController {
         return ResponseEntity.noContent().build();
     }
 
+
+
     // Login endpoint
     @PostMapping("/login")
-    public ResponseEntity<Utilisateur> login(@RequestBody Utilisateur utilisateur) {
-        Utilisateur user = utilisateurService.login(utilisateur.getEmail(), utilisateur.getMot_de_passe());
-        if (user != null) {
+    public ResponseEntity<Utilisateur> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            Utilisateur user = utilisateurService.login(loginRequest.getEmail(), loginRequest.getPassword());
             return ResponseEntity.ok(user); // Return the logged-in user details (including ID)
-        } else {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(null);  // Unauthorized if login fails
         }
+    }
 
+    //a simple DTO (Data Transfer Object)
+    // LoginRequest should be static
+    public static class LoginRequest {
+        private String email;
+        private String password;
+
+        // Default constructor is required for deserialization
+        public LoginRequest() {
+        }
+
+        public LoginRequest(String email, String password) {
+            this.email = email;
+            this.password = password;
+        }
+
+        // Getters and setters
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 }
