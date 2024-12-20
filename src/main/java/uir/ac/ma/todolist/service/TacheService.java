@@ -31,16 +31,16 @@ public class TacheService {
         return optionalTache.orElseThrow(() -> new RuntimeException("Tâche non trouvée avec l'ID : " + id));
     }
 
-    // Mettre à jour une tâche existante
     public Tache updateTache(Long id, Tache tacheDetails) {
-        Tache tache = getTacheById(id); // Récupère la tâche existante par son ID
+        Tache tache = getTacheById(id); // Fetch the existing task by its ID
         tache.setTitre(tacheDetails.getTitre());
         tache.setDescription(tacheDetails.getDescription());
         tache.setDeadline(tacheDetails.getDeadline());
         tache.setCategorie(tacheDetails.getCategorie());
-        // Mettre à jour d'autres champs si nécessaire
+        tache.setStatut(tacheDetails.getStatut()); // Ensure statut is updated
+        // Update other fields if necessary
 
-        return tacheRepository.save(tache); // Sauvegarder la tâche mise à jour
+        return tacheRepository.save(tache); // Save the updated task
     }
 
     // Supprimer une tâche par son ID
